@@ -44,8 +44,8 @@ function App() {
         }}/>
         <button>Add Book</button>
       </form>
-      <div></div>
-      <ul className='bg-gray-600 py-3' id='books'>
+      
+      <ul className='bg-gray-600 py-3 flex flex-col justify-center mx-auto' id='books'>
         {books.map((book:{title:String, author:String},idx) => (
           <li className='bg-gray-400 py-2 border-2 border-gray-900 rounded-md my-4'
           key={idx}>
@@ -54,6 +54,8 @@ function App() {
           </li>
         ))}
       </ul>
+      
+      
     </div>
   )
 }
