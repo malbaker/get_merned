@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import './App.css'
 
 function App() {
-  const [books, setBooks] = useState([])
-  const [title, setTitle] = useState('')
+  const [books , setBooks] = useState([])
+  const [title , setTitle] = useState('')
   const [author, setAuthor] = useState('')
   
 
@@ -13,10 +13,12 @@ function App() {
     // sends a POST request to the server
     await fetch('http://localhost:5000/books', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'}, // tells the server that the data is in JSON format
       body: JSON.stringify({ title, author }),
+      headers: {'Content-Type': 'application/json'}, // tells the server that the data is in JSON format
     })
     console.log('Book created')
+    // refresh the page
+    window.location.reload()
     setAuthor('')
     setTitle('')
   }
@@ -25,7 +27,7 @@ function App() {
     async function fetchBooks () {
       const response = await fetch('http://localhost:5000/books')
       const newBooks = await response.json()
-      setBooks(newBooks)
+      await setBooks(newBooks)
     }
     fetchBooks()
   }, [])
@@ -46,7 +48,7 @@ function App() {
       </form>
       
       <ul className='bg-gray-600 py-3 flex flex-col justify-center mx-auto' id='books'>
-        {books.map((book:{title:String, author:String},idx) => (
+        {books.reverse().map((book:{title:String, author:String},idx) => (
           <li className='bg-gray-400 py-2 border-2 border-gray-900 rounded-md my-4'
           key={idx}>
             <div>{book.title}</div>

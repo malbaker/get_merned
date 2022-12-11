@@ -12,8 +12,10 @@ const port = 5000
 
 
 
-app.get("/", (req: Request, res: Response) => {
-    res.send("this is root");
+app.get("/books", async (req: Request, res: Response) => {
+    const books = await BookModel.find();
+    console.log(books)
+    res.json(books);
 })
 
 app.post("/books", async (req: Request, res: Response) => {
@@ -26,10 +28,7 @@ app.post("/books", async (req: Request, res: Response) => {
     console.log(createdBook)
 })
 
-app.get("/books", async (req: Request, res: Response) => {
-    const books = await BookModel.find();
-    res.json(books);
-})
+
 
 
 // Connect to database
