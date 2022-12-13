@@ -1,7 +1,9 @@
 import express, {Request, Response}  from 'express';
 import mongoose from 'mongoose'
 import cors from 'cors';
-import Book from './models/Book';
+import { getBooksController } from './controllers/getBooksController';
+import { createBookController } from './controllers/createBookController';
+import { deleteBooksController } from './controllers/deleteBooksController';
 require("dotenv").config();
 
 // Initialize express
@@ -11,28 +13,10 @@ app.use(express.json());
 const port = 5000
 
 
-
-app.get("/books", async (req: Request, res: Response) => {
-    const books = await Book.find();
-    console.log(books)
-    res.json(books);
-})
-
-app.post("/books", async (req: Request, res: Response) => {
-    const newBook = new Book({
-        title: req.body.title,
-        author: req.body.author
-        })
-    const createdBook = await newBook.save();
-    res.json(createdBook);
-    console.log(createdBook)
-})
-
-app.delete("/books/:bookId", async (req: Request, res: Response) => {
-    const bookId = req.params.bookId;
-    const deletedBook = await Book.findByIdAndDelete(bookId);
-    res.json(deletedBook);
-})
+// API routes
+app.get("/books", getBooksController)
+app.post("/books", createBookController)
+app.delete("/books/:bookId", deleteBooksController)
 
 
 // Connect to database

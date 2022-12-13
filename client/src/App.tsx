@@ -56,7 +56,10 @@ function App() {
           {books.map((book,idx) => (
           <li className='block h-20 border-white border rounded-md'
           key={idx}>
-            <button onClick={() => {handleDeleteBook(book._id)}} className=' text-white'>x</button>
+            <button onClick={() => {handleDeleteBook(book._id)}} 
+                    className='text-white'>
+                      x
+            </button>
             <div className='text-center'>
               <p>{book.title}</p>
             </div>
