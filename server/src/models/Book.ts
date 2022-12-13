@@ -7,7 +7,7 @@ const BookSchema = new Schema({
     author: String,
 })
 
-const BookModel = mongoose.model('Book', BookSchema);
+const Book = mongoose.model('Book', BookSchema);
 
-export default BookModel;
+export default Book;
 

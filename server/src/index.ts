@@ -1,7 +1,7 @@
 import express, {Request, Response}  from 'express';
 import mongoose from 'mongoose'
 import cors from 'cors';
-import BookModel from './models/Book';
+import Book from './models/Book';
 require("dotenv").config();
 
 // Initialize express
@@ -13,13 +13,13 @@ const port = 5000
 
 
 app.get("/books", async (req: Request, res: Response) => {
-    const books = await BookModel.find();
+    const books = await Book.find();
     console.log(books)
     res.json(books);
 })
 
 app.post("/books", async (req: Request, res: Response) => {
-    const newBook = new BookModel({
+    const newBook = new Book({
         title: req.body.title,
         author: req.body.author
         })
@@ -28,7 +28,11 @@ app.post("/books", async (req: Request, res: Response) => {
     console.log(createdBook)
 })
 
-
+app.delete("/books/:bookId", async (req: Request, res: Response) => {
+    const bookId = req.params.bookId;
+    const deletedBook = await Book.findByIdAndDelete(bookId);
+    res.json(deletedBook);
+})
 
 
 // Connect to database
