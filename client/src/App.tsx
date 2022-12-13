@@ -1,39 +1,33 @@
 import React, { useEffect, useState } from 'react'
-import getBooks from './api/getBooks'
+import { deleteBook } from './api/deleteBook'
+import { getBooks, TBook } from './api/getBooks'
+import { createBook } from './api/createBook'
 import './App.css'
 
 function App() {
+  const [books, setBooks] = useState <TBook[]>([])
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
-  const [books, setBooks] = useState([])
+  
 
 
   async function handleCreateBook(e: React.FormEvent) {
-    e.preventDefault()
-
-    // sends a POST request to the server
-    await fetch('http://localhost:5000/books', {
-      method: 'POST',
-      body: JSON.stringify({ title, author }),
-      headers: { 'Content-Type': 'application/json' }, // tells the server that the data is in JSON format
-    })
-    console.log('Book created')
-    // refresh the page
+    e.preventDefault()    
+    const newBook = await createBook( title, author )
+    setBooks([...books, newBook])
     setAuthor('')
     setTitle('')
   }
 
-  async function handleDeleteDeck(deckId:String) {
-    await fetch(`http://localhost:5000/books/${deckId}`, {
-      method: 'DELETE',
-    })
-    setBooks(books.filter((book: { _id: String }) => book._id !== deckId))
+  async function handleDeleteBook(bookId:String) {
+    await deleteBook(bookId)
+    setBooks(books.filter((book) => book._id !== bookId));
   }
 
   useEffect(() => {
     async function fetchBooks() {
       const newBooks = await getBooks()
-      await setBooks(newBooks)
+      setBooks(newBooks)
     }
     fetchBooks()
   }, [])
@@ -59,10 +53,10 @@ function App() {
 
       <ul id='books' 
           className='bg-gray-600 grid gap-2 my-0 mx-auto grid-cols-1 md:grid-cols-3 p-2'>
-        {books.map((book: { title: String, author: String }, idx) => (
+          {books.map((book,idx) => (
           <li className='block h-20 border-white border rounded-md'
           key={idx}>
-            <button className=' text-white'>x</button>
+            <button onClick={() => {handleDeleteBook(book._id)}} className=' text-white'>x</button>
             <div className='text-center'>
               <p>{book.title}</p>
             </div>
@@ -76,4 +70,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
